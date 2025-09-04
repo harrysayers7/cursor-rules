@@ -1,0 +1,369 @@
+---
+description: Governance, compliance, and regulatory requirements
+globs: **/compliance/**, **/audit/**, **/policies/**, **/legal/**, **/docs/**
+alwaysApply: false
+---
+
+# Governance & Compliance
+
+> **Instructions**: Document governance requirements, compliance frameworks, and regulatory obligations specific to your project.
+
+## Regulatory Compliance
+
+### Applicable Regulations
+- **GDPR**: [General Data Protection Regulation - EU data protection]
+- **CCPA**: [California Consumer Privacy Act - California data rights]
+- **SOX**: [Sarbanes-Oxley Act - Financial reporting and controls]
+- **HIPAA**: [Health Insurance Portability and Accountability Act - Healthcare data]
+- **PCI DSS**: [Payment Card Industry Data Security Standard - Payment processing]
+- **SOC 2**: [Service Organization Control 2 - Security and availability]
+- **ISO 27001**: [Information Security Management System]
+
+### Compliance Requirements by Data Type
+- **Personal Data (GDPR)**: [Consent management, data portability, right to be forgotten]
+- **Financial Data (SOX)**: [Audit trails, data integrity, access controls]
+- **Health Data (HIPAA)**: [Encryption, access logging, breach notification]
+- **Payment Data (PCI DSS)**: [Tokenization, secure transmission, regular testing]
+
+## Data Governance
+
+### Data Classification
+- **Public**: [Information that can be freely shared]
+- **Internal**: [Company information, not for external distribution]
+- **Confidential**: [Sensitive business information, limited access]
+- **Restricted**: [Highly sensitive data, strict access controls]
+
+### Data Handling Policies
+- **Data Minimization**: [Collect only necessary data]
+- **Purpose Limitation**: [Use data only for stated purposes]
+- **Retention Limits**: [Delete data after retention period]
+- **Cross-Border Transfers**: [Restrictions on international data transfers]
+
+### Example Data Classification
+```typescript
+enum DataClassification {
+  PUBLIC = 'public',
+  INTERNAL = 'internal', 
+  CONFIDENTIAL = 'confidential',
+  RESTRICTED = 'restricted'
+}
+
+interface DataPolicy {
+  classification: DataClassification;
+  retentionPeriod: number; // days
+  encryptionRequired: boolean;
+  accessLogging: boolean;
+  crossBorderAllowed: boolean;
+}
+
+const dataPolicies: Record<string, DataPolicy> = {
+  'user-profile': {
+    classification: DataClassification.CONFIDENTIAL,
+    retentionPeriod: 2555, // 7 years
+    encryptionRequired: true,
+    accessLogging: true,
+    crossBorderAllowed: false
+  },
+  'analytics-data': {
+    classification: DataClassification.INTERNAL,
+    retentionPeriod: 365,
+    encryptionRequired: false,
+    accessLogging: false,
+    crossBorderAllowed: true
+  }
+};
+```
+
+## Audit & Compliance Monitoring
+
+### Audit Requirements
+- **Access Logging**: [Log all data access and modifications]
+- **Change Tracking**: [Track all system and data changes]
+- **User Activity**: [Monitor user actions and permissions]
+- **System Events**: [Log security and operational events]
+
+### Compliance Monitoring
+- **Automated Checks**: [Regular compliance validation]
+- **Exception Reporting**: [Alert on compliance violations]
+- **Trend Analysis**: [Monitor compliance metrics over time]
+- **Remediation Tracking**: [Track compliance issue resolution]
+
+### Example Audit Implementation
+```typescript
+// Audit logging service
+class AuditLogger {
+  async logAccess(userId: string, resource: string, action: string) {
+    const auditEntry = {
+      timestamp: new Date().toISOString(),
+      userId,
+      resource,
+      action,
+      ip: this.getClientIP(),
+      userAgent: this.getUserAgent(),
+      complianceFlags: this.getComplianceFlags(resource)
+    };
+    
+    await this.storeAuditEntry(auditEntry);
+  }
+  
+  private getComplianceFlags(resource: string): string[] {
+    const flags = [];
+    if (this.isPersonalData(resource)) flags.push('GDPR');
+    if (this.isFinancialData(resource)) flags.push('SOX');
+    if (this.isHealthData(resource)) flags.push('HIPAA');
+    return flags;
+  }
+}
+```
+
+## Legal & Privacy Requirements
+
+### Privacy by Design
+- **Data Protection Impact Assessments**: [Assess privacy risks for new features]
+- **Privacy Notices**: [Clear, understandable privacy policies]
+- **Consent Management**: [Granular consent collection and management]
+- **Data Subject Rights**: [Support for data portability, deletion, correction]
+
+### Legal Obligations
+- **Breach Notification**: [Timely notification of data breaches]
+- **Data Processing Records**: [Maintain records of processing activities]
+- **Third-Party Agreements**: [Data processing agreements with vendors]
+- **Regulatory Reporting**: [Required regulatory submissions]
+
+### Example Privacy Implementation
+```typescript
+// Consent management
+interface ConsentRecord {
+  userId: string;
+  purpose: string;
+  granted: boolean;
+  timestamp: Date;
+  version: string;
+  withdrawalTimestamp?: Date;
+}
+
+class ConsentManager {
+  async recordConsent(userId: string, purpose: string, granted: boolean) {
+    const consent: ConsentRecord = {
+      userId,
+      purpose,
+      granted,
+      timestamp: new Date(),
+      version: '1.0'
+    };
+    
+    await this.storeConsent(consent);
+  }
+  
+  async withdrawConsent(userId: string, purpose: string) {
+    await this.updateConsent(userId, purpose, {
+      granted: false,
+      withdrawalTimestamp: new Date()
+    });
+  }
+}
+```
+
+## Risk Management
+
+### Risk Assessment
+- **Data Risk Analysis**: [Assess risks to personal and sensitive data]
+- **Operational Risk**: [Identify operational risks and controls]
+- **Third-Party Risk**: [Assess vendor and partner risks]
+- **Regulatory Risk**: [Monitor regulatory changes and compliance gaps]
+
+### Risk Mitigation
+- **Technical Controls**: [Implement security and privacy controls]
+- **Administrative Controls**: [Policies, procedures, training]
+- **Physical Controls**: [Physical security measures]
+- **Monitoring Controls**: [Continuous monitoring and alerting]
+
+### Example Risk Management
+```typescript
+// Risk assessment framework
+interface RiskAssessment {
+  riskId: string;
+  description: string;
+  likelihood: 'low' | 'medium' | 'high';
+  impact: 'low' | 'medium' | 'high';
+  controls: string[];
+  residualRisk: 'low' | 'medium' | 'high';
+  owner: string;
+  reviewDate: Date;
+}
+
+const riskAssessments: RiskAssessment[] = [
+  {
+    riskId: 'DATA_BREACH',
+    description: 'Unauthorized access to personal data',
+    likelihood: 'medium',
+    impact: 'high',
+    controls: ['encryption', 'access_controls', 'monitoring'],
+    residualRisk: 'low',
+    owner: 'security-team',
+    reviewDate: new Date('2024-12-31')
+  }
+];
+```
+
+## Policy Management
+
+### Policy Framework
+- **Data Protection Policy**: [How personal data is handled]
+- **Information Security Policy**: [Security requirements and controls]
+- **Acceptable Use Policy**: [How systems and data can be used]
+- **Incident Response Policy**: [How security incidents are handled]
+
+### Policy Implementation
+- **Policy Distribution**: [Ensure all stakeholders have access]
+- **Training Requirements**: [Mandatory training on policies]
+- **Compliance Monitoring**: [Track policy adherence]
+- **Policy Updates**: [Regular review and update of policies]
+
+### Example Policy Implementation
+```typescript
+// Policy compliance tracking
+interface PolicyCompliance {
+  policyId: string;
+  userId: string;
+  acknowledged: boolean;
+  acknowledgedAt?: Date;
+  trainingCompleted: boolean;
+  trainingCompletedAt?: Date;
+  lastReview?: Date;
+}
+
+class PolicyManager {
+  async trackCompliance(policyId: string, userId: string) {
+    const compliance = await this.getCompliance(policyId, userId);
+    
+    if (!compliance.acknowledged) {
+      await this.sendPolicyNotification(userId, policyId);
+    }
+    
+    if (this.isTrainingRequired(policyId) && !compliance.trainingCompleted) {
+      await this.scheduleTraining(userId, policyId);
+    }
+  }
+}
+```
+
+## Third-Party Governance
+
+### Vendor Management
+- **Due Diligence**: [Assess vendor security and compliance]
+- **Contract Requirements**: [Include security and compliance clauses]
+- **Ongoing Monitoring**: [Regular vendor security assessments]
+- **Incident Coordination**: [Vendor incident response procedures]
+
+### Data Processing Agreements
+- **Purpose Limitation**: [Vendors can only use data for specified purposes]
+- **Security Requirements**: [Vendors must implement specified security controls]
+- **Audit Rights**: [Right to audit vendor compliance]
+- **Breach Notification**: [Vendor must notify of security incidents]
+
+### Example Vendor Management
+```typescript
+// Vendor compliance tracking
+interface VendorCompliance {
+  vendorId: string;
+  vendorName: string;
+  services: string[];
+  complianceStatus: 'compliant' | 'non-compliant' | 'under-review';
+  lastAssessment: Date;
+  nextAssessment: Date;
+  riskLevel: 'low' | 'medium' | 'high';
+  controls: string[];
+}
+
+class VendorManager {
+  async assessVendor(vendorId: string): Promise<VendorCompliance> {
+    const assessment = await this.performSecurityAssessment(vendorId);
+    const compliance = await this.checkComplianceRequirements(vendorId);
+    
+    return {
+      vendorId,
+      vendorName: assessment.name,
+      services: assessment.services,
+      complianceStatus: compliance.status,
+      lastAssessment: new Date(),
+      nextAssessment: this.calculateNextAssessment(compliance.status),
+      riskLevel: this.calculateRiskLevel(assessment, compliance),
+      controls: compliance.controls
+    };
+  }
+}
+```
+
+## Reporting & Documentation
+
+### Compliance Reporting
+- **Regular Reports**: [Monthly/quarterly compliance status reports]
+- **Exception Reports**: [Reports on compliance violations and remediation]
+- **Trend Analysis**: [Analysis of compliance metrics over time]
+- **Regulatory Submissions**: [Required regulatory filings and reports]
+
+### Documentation Requirements
+- **Data Processing Records**: [Documentation of data processing activities]
+- **Risk Assessments**: [Documented risk assessments and mitigation plans]
+- **Incident Reports**: [Documentation of security incidents and responses]
+- **Audit Reports**: [Results of internal and external audits]
+
+### Example Reporting
+```typescript
+// Compliance reporting service
+class ComplianceReporter {
+  async generateMonthlyReport(): Promise<ComplianceReport> {
+    const dataAccessLogs = await this.getDataAccessLogs();
+    const securityIncidents = await this.getSecurityIncidents();
+    const policyViolations = await this.getPolicyViolations();
+    
+    return {
+      period: this.getCurrentMonth(),
+      dataAccessCount: dataAccessLogs.length,
+      securityIncidentCount: securityIncidents.length,
+      policyViolationCount: policyViolations.length,
+      complianceScore: this.calculateComplianceScore(dataAccessLogs, securityIncidents, policyViolations),
+      recommendations: this.generateRecommendations(dataAccessLogs, securityIncidents, policyViolations)
+    };
+  }
+}
+```
+
+## Compliance Checklist
+
+### Pre-Deployment Compliance
+- [ ] Data protection impact assessment completed
+- [ ] Privacy notices updated and published
+- [ ] Consent mechanisms implemented
+- [ ] Data processing agreements in place
+- [ ] Security controls implemented
+- [ ] Audit logging configured
+- [ ] Compliance monitoring active
+- [ ] Incident response procedures tested
+
+### Ongoing Compliance
+- [ ] Regular compliance assessments scheduled
+- [ ] Policy updates communicated
+- [ ] Training completed by all staff
+- [ ] Vendor assessments current
+- [ ] Audit reports reviewed
+- [ ] Regulatory changes monitored
+- [ ] Incident response procedures updated
+- [ ] Compliance metrics tracked
+
+---
+
+## Maintenance Notes
+
+**Last Updated**: [Date]
+**Owner**: [Compliance officer or legal team]
+**Review Schedule**: Quarterly compliance review
+
+This file should be updated when:
+- New regulations are introduced
+- Compliance requirements change
+- Audit findings require updates
+- New data types are processed
+- Third-party relationships change
+- Incident response procedures evolve

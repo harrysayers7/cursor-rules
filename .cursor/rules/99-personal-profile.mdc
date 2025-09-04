@@ -46,6 +46,7 @@ alwaysApply: true
   - Use for: Remembering project decisions, tracking patterns
   - Commands: `mcp_memory_create_entities`, `mcp_memory_search_nodes`
 
+
 ## Development Workflow Preferences
 
 ### Project Initialization
@@ -74,7 +75,7 @@ my-project/
 ### Deployment Preferences
 - **Containerization**: Docker with multi-stage builds
 - **CI/CD**: GitHub Actions (prefer over GitLab CI)
-- **Hosting**: Vercel for frontend, Railway/Fly.io for backend
+- **Hosting**: Vercel for frontend, Railway for backend
 - **Monitoring**: Sentry for errors, Posthog for analytics
 
 ## Personal Code Style
