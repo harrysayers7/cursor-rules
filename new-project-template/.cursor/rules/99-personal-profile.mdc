@@ -1,0 +1,195 @@
+---
+description: Personal development environment and tool preferences for new projects
+alwaysApply: true
+---
+
+# Personal Development Profile
+
+## My Tech Stack Preferences
+
+### Languages & Frameworks I Use
+**Primary Languages**: TypeScript, Python 3.11
+**Web Frameworks**: Next.js 14, FastAPI
+**Database**: Supabase (PostgreSQL)
+**Cloud**: Vercel, Supabase
+
+## Available MCP Tools
+
+### Database & Backend
+- **Supabase MCP**: Database and backend services
+  - Use for: Database setup, API generation, authentication, real-time features
+  - Commands: 
+    - `mcp_supabase_create_project` - Create new Supabase project
+    - `mcp_supabase_list_tables` - View database schema
+    - `mcp_supabase_execute_sql` - Run database queries
+    - `mcp_supabase_apply_migration` - Apply schema changes
+    - `mcp_supabase_generate_typescript_types` - Generate type definitions
+    - `mcp_supabase_get_project` - Check project status
+    - `mcp_supabase_get_advisors` - Security and performance recommendations
+
+### Project Management
+- **Task Master AI**: Task planning, project initialization, complexity analysis
+  - Use for: Breaking down features, project setup, task tracking
+  - Commands: `mcp_task-master-ai_initialize_project`, `mcp_task-master-ai_add_task`
+
+### Development Tools
+- **GitHub Integration**: Repository management, code search
+  - Use for: Creating repos, managing issues, code collaboration
+  - Commands: `mcp_github_create_repository`, `mcp_github_push_files`
+
+## Natural Language Database Operations
+
+With Supabase MCP, you can use plain English for complex database operations:
+
+### Schema Management
+- "Create a users table with email authentication"
+- "Add a posts table linked to users with categories"
+- "Create a comments system for posts"
+- "Add full-text search to articles"
+- "Set up real-time subscriptions for chat"
+
+### Data Operations  
+- "Show me all users created this week"
+- "Find posts with more than 100 likes"
+- "Get user activity for the dashboard"
+- "Export user data for GDPR compliance"
+
+### Security & Performance
+- "Enable RLS on all tables"
+- "Audit database security policies"
+- "Optimize slow queries"
+- "Set up automated backups"
+
+### Development Workflow
+- "Generate TypeScript types for my frontend"
+- "Create API documentation"
+- "Set up database migrations"
+- "Configure development environment"
+
+## Development Workflow Preferences
+
+### Project Initialization
+1. **Use Task Master** for initial project breakdown
+2. **Create Supabase project** with MCP integration
+3. **Set up Cursor rules** for the specific domain
+4. **Initialize Git repository** with proper structure
+5. **Configure TypeScript** with strict settings
+
+### Database-First Development
+```
+1. Design schema with natural language
+   ↓
+2. Supabase MCP creates tables and relationships
+   ↓  
+3. Auto-generate TypeScript types
+   ↓
+4. Build type-safe frontend components
+   ↓
+5. Deploy with automatic CI/CD
+```
+
+### Code Organization Patterns
+```
+my-project/
+├── .cursor/rules/          # Project-specific context
+├── supabase/              # Database migrations and config
+├── src/
+│   ├── components/        # React components
+│   ├── pages/            # Next.js pages/routes
+│   ├── lib/              # Utilities and Supabase client
+│   └── types/            # Auto-generated types
+├── docs/                 # Auto-generated documentation
+└── .env.example          # Environment template
+```
+
+## Cursor Integration Examples
+
+### Creating a Blog App
+**You say:** "Create a blog application with user authentication"
+
+**Cursor understands and executes:**
+1. Creates Supabase project
+2. Sets up authentication tables
+3. Creates blog schema (posts, categories, comments)
+4. Generates TypeScript types
+5. Creates React components
+6. Sets up API routes
+7. Configures authentication flow
+8. Adds RLS policies for security
+
+### Adding Real-time Features
+**You say:** "Add real-time comments to my blog posts"
+
+**Cursor does:**
+1. Enables Supabase real-time
+2. Updates comment schema
+3. Adds real-time subscriptions
+4. Updates React components
+5. Handles connection states
+6. Optimizes for performance
+
+### Scaling for Production
+**You say:** "Optimize my app for 10,000 concurrent users"
+
+**Cursor implements:**
+1. Database indexing strategy
+2. Connection pooling
+3. CDN configuration
+4. Caching layers
+5. Performance monitoring
+6. Auto-scaling policies
+
+## Security Best Practices
+
+### Automatic Security Features
+- **RLS Policies**: Auto-applied to all user tables
+- **API Key Management**: Scoped keys for different environments
+- **Input Validation**: TypeScript + Supabase validation
+- **HTTPS Everywhere**: Automatic SSL certificates
+
+### Compliance Support
+- **GDPR**: Data export and deletion workflows
+- **SOC 2**: Audit logging and compliance reporting
+- **Security Audits**: Regular automated security checks
+
+## Performance Optimization
+
+### Database Performance
+- **Automatic Indexing**: Based on query patterns
+- **Query Optimization**: Real-time performance monitoring
+- **Connection Pooling**: Automatic scaling
+- **Caching**: Multi-layer caching strategy
+
+### Frontend Performance
+- **Code Splitting**: Automatic route-based splitting
+- **Image Optimization**: Next.js automatic optimization
+- **Static Generation**: Pre-rendered pages where possible
+- **Progressive Enhancement**: Works without JavaScript
+
+## Team Collaboration
+
+### Code Review Standards
+- **Type Safety**: All database operations must be type-safe
+- **Security First**: RLS policies required for user data
+- **Performance**: Query performance checks in CI
+- **Documentation**: Auto-generated docs must be current
+
+### Deployment Pipeline
+```
+1. Feature branch → Supabase preview environment
+2. PR review → Automated testing
+3. Staging deployment → Integration testing  
+4. Production deployment → Health monitoring
+```
+
+## Maintenance Notes
+
+**Last Updated**: 2025-01-16
+**Review Schedule**: Monthly (update when adding new MCP tools)
+
+This profile enables Cursor to understand:
+- Your preferred tech stack
+- Available MCP tools and their capabilities
+- Natural language patterns for database operations
+- Security and performance requirements
+- Team collaboration workflows

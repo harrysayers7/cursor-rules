@@ -1,0 +1,200 @@
+---
+description: Domain-specific business logic and constraints for task management app
+alwaysApply: true
+---
+
+# Business Rules
+
+## What This Project Is
+
+**Brief Description**: A collaborative task management application for teams with real-time updates and comprehensive project tracking.
+
+**Domain**: Project Management / Team Collaboration
+
+**Scale**: MVP targeting 10-100 person teams, designed to scale to enterprise
+
+## Critical Business Context
+
+### Compliance Requirements
+- [x] GDPR/Privacy regulations (EU user data)
+- [ ] SOX (financial reporting)
+- [ ] HIPAA (healthcare)
+- [ ] PCI DSS (payment processing)
+- [x] SOC 2 (security controls for enterprise customers)
+
+### Performance Requirements
+- **Uptime SLA**: 99.9% availability
+- **Response Time**: <200ms API responses, <3s page load
+- **Scale**: Support 1000+ concurrent users, 100K+ tasks per team
+
+### Security Constraints
+- **Data Classification**: Internal/Confidential (team collaboration data)
+- **Authentication**: OAuth + SAML for enterprise
+- **Special Security**: End-to-end encryption for sensitive projects
+
+## Technical Constraints
+
+### Technology Stack
+**Language(s)**: TypeScript, SQL
+**Framework(s)**: Next.js 14, Supabase
+**Database**: PostgreSQL 15 (via Supabase)
+**Infrastructure**: Vercel, Supabase Cloud
+
+### Hard Constraints
+- **Real-time Requirements**: Sub-second updates for collaboration
+- **Mobile Support**: Full PWA compatibility
+- **Offline Capability**: Basic task viewing offline
+- **Data Residency**: EU data must stay in EU regions
+
+## Business Logic Rules
+
+### Task Management Rules
+
+#### Task Status Flow
+```
+todo → in_progress → review → done
+      ↓
+   cancelled (from any status)
+```
+
+#### Priority Rules
+- **Urgent**: Automatically escalates to team admins after 2 hours
+- **High**: Must be assigned within 24 hours
+- **Medium/Low**: No automatic escalation
+
+#### Assignment Rules
+- Tasks can only be assigned to team members
+- Self-assignment is always allowed
+- Managers can reassign any task in their projects
+- Owners can reassign any task in their teams
+
+### Team & Permission Rules
+
+#### Team Roles
+- **Owner**: Full access, can delete team, manage billing
+- **Admin**: Manage members, create/edit projects, view analytics
+- **Member**: Create/edit tasks, comment, view assigned projects
+
+#### Project Access
+- Members only see projects they're explicitly added to
+- Admins see all projects in their teams
+- Owners have access to everything
+
+#### Data Privacy
+- User email/profile only visible to team members
+- Task details only visible to project members
+- Analytics only available to admins and owners
+
+### Notification Rules
+
+#### Real-time Notifications
+- Task assignment → immediate notification
+- Status changes → notify assignee and creator
+- Comments → notify all task participants
+- Due date approaching → 24h and 2h warnings
+
+#### Batched Notifications (email)
+- Daily digest of assigned tasks
+- Weekly team progress summary
+- Monthly analytics report for managers
+
+### Automation Rules
+
+#### Auto-assignment
+- If project has default assignee → auto-assign new tasks
+- If task unassigned for 48h → notify project manager
+- If urgent task unassigned for 2h → escalate to team admin
+
+#### Status Updates
+- If all subtasks complete → suggest parent task completion
+- If task idle in "review" for 72h → remind reviewer
+- If project completion rate < 20% → alert team admin
+
+## Data Validation Rules
+
+### Task Validation
+- Title: 1-200 characters, required
+- Description: Optional, max 5000 characters
+- Due date: Cannot be in the past
+- Priority: Must be one of: low, medium, high, urgent
+
+### Team Validation
+- Team name: 3-50 characters, unique per organization
+- Member limit: 100 members per team (paid plans)
+- Project limit: 50 projects per team
+
+### User Validation
+- Email: Must be valid, unique
+- Name: 2-100 characters
+- Teams: Max 5 teams per user (free plan)
+
+## Integration Points
+
+### External Services
+- **Authentication**: Supabase Auth + OAuth providers
+- **Email**: Supabase integrated email service
+- **File Storage**: Supabase Storage for attachments
+- **Analytics**: Custom analytics via Supabase
+- **Monitoring**: Supabase built-in monitoring
+
+### API Design
+- RESTful APIs for CRUD operations
+- GraphQL for complex queries (future)
+- Real-time subscriptions via Supabase
+- Webhook endpoints for external integrations
+
+## Error Handling Standards
+
+### User-Facing Errors
+- Network errors: "Connection issue, please try again"
+- Permission errors: "You don't have permission for this action"
+- Validation errors: Specific field-level messages
+- Rate limits: "Too many requests, please wait a moment"
+
+### System Errors
+- Database errors: Log details, show generic message
+- Authentication errors: Redirect to login
+- API errors: Retry with exponential backoff
+- Critical errors: Alert development team immediately
+
+## Business Metrics
+
+### Key Performance Indicators
+- **User Engagement**: Daily/Monthly active users
+- **Task Completion**: Average completion rate per team
+- **Response Time**: Time from task creation to first assignment
+- **Collaboration**: Comments and updates per task
+
+### Success Metrics
+- **Retention**: 80% weekly retention for active teams
+- **Adoption**: 70% of team members active within 2 weeks
+- **Performance**: 95% of API calls under 200ms
+- **Satisfaction**: NPS score > 50
+
+## Compliance & Audit
+
+### GDPR Compliance
+- User data export: Complete data download in JSON
+- Data deletion: Hard delete within 30 days
+- Consent tracking: Log all permission changes
+- Data processing: Clear privacy policy and consent
+
+### SOC 2 Requirements
+- Access logs: All user actions logged
+- Data encryption: At rest and in transit
+- Backup procedures: Daily automated backups
+- Incident response: 4-hour response time for security issues
+
+## Feature Flags & Rollout Strategy
+
+### Gradual Rollout
+- New features: Start with 5% of teams
+- Performance features: A/B test for 2 weeks
+- UI changes: Collect feedback before full rollout
+- Critical fixes: Immediate deployment allowed
+
+### Feature Toggles
+- Real-time features: Can be disabled per team
+- Analytics: Can be restricted by plan
+- Integrations: Enable per team basis
+- Experimental features: Opt-in only

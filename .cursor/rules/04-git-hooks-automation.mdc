@@ -1,0 +1,256 @@
+---
+description: Automatic Git hook setup for Supabase project tracking
+globs: **/.git/**, **/setup-git-hooks.sh**, **/.env.example**
+alwaysApply: false
+---
+
+# Git Hooks & Supabase Automation
+
+## Automatic Project Setup
+
+When starting a new project, Cursor will automatically:
+
+1. **Detect if Git hooks are needed** for Supabase tracking
+2. **Create the setup script** if it doesn't exist
+3. **Initialize Git repository** if needed
+4. **Set up environment variables** for Supabase
+5. **Install and configure** the post-commit hook
+
+## Project Detection Rules
+
+### When to Set Up Git Hooks
+- ✅ **New project** with `.cursor/rules/` directory
+- ✅ **Existing project** with Supabase integration mentioned
+- ✅ **Project** with `package.json` or similar dependency files
+- ✅ **User explicitly asks** for Git tracking
+
+### When NOT to Set Up
+- ❌ **Simple scripts** or one-off files
+- ❌ **Documentation-only** repositories
+- ❌ **Temporary** or experimental projects
+
+## Automatic Setup Process
+
+### 1. Environment Detection
+```bash
+# Check for existing Supabase configuration
+if [ -f ".env.local" ] && grep -q "SUPABASE" .env.local; then
+  echo "✅ Supabase already configured"
+else
+  echo "🔧 Setting up Supabase environment"
+fi
+```
+
+### 2. Git Repository Check
+```bash
+# Initialize Git if needed
+if [ ! -d ".git" ]; then
+  git init
+  echo "✅ Git repository initialized"
+fi
+```
+
+### 3. Setup Script Creation
+```bash
+# Create setup-git-hooks.sh if it doesn't exist
+if [ ! -f "setup-git-hooks.sh" ]; then
+  # Copy from cursor-rules template
+  cp /path/to/cursor-rules/setup-git-hooks.sh .
+  chmod +x setup-git-hooks.sh
+  echo "✅ Git hook setup script created"
+fi
+```
+
+### 4. Environment Variables
+```bash
+# Add to .env.example
+echo "SUPABASE_ANON_KEY=your_anon_key_here" >> .env.example
+echo "SUPABASE_URL=https://zeopoimfsxdidkyiucsr.supabase.co" >> .env.example
+```
+
+## Cursor Integration Commands
+
+### Natural Language Triggers
+When you say any of these, Cursor will set up Git hooks:
+
+- **"Set up Git tracking for this project"**
+- **"Add Supabase project tracking"**
+- **"Track commits in Supabase"**
+- **"Set up automated Git hooks"**
+- **"Initialize project tracking"**
+
+### Automatic Detection
+Cursor will also detect when to set up Git hooks when:
+
+- You create a new `.cursor/rules/` directory
+- You mention "Supabase" in project context
+- You add database-related files
+- You create a new project structure
+
+## Setup Script Template
+
+The `setup-git-hooks.sh` script will be automatically created with:
+
+```bash
+#!/bin/bash
+# Auto-generated Git Hook Setup for Supabase Project Tracking
+
+PROJECT_NAME="${1:-$(basename $(pwd))}"
+SUPABASE_URL="${SUPABASE_URL:-https://zeopoimfsxdidkyiucsr.supabase.co}"
+SUPABASE_ANON_KEY="${SUPABASE_ANON_KEY}"
+
+# ... rest of setup script
+```
+
+## Environment Configuration
+
+### Required Environment Variables
+```bash
+# .env.local (add to .gitignore)
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+SUPABASE_URL=https://zeopoimfsxdidkyiucsr.supabase.co
+```
+
+### Optional Configuration
+```bash
+# .env.local
+PROJECT_NAME=my-awesome-project
+SUPABASE_PROJECT_ID=zeopoimfsxdidkyiucsr
+GIT_HOOK_ENABLED=true
+```
+
+## Project Integration
+
+### Cursor Rules Integration
+Add to your project's `.cursor/rules/00-project-context.mdc`:
+
+```markdown
+## Git Tracking
+- **Enabled**: Automatic Git commit tracking to Supabase
+- **Project ID**: [Your project name in Supabase]
+- **Tracking**: Commits, operations, deployments
+- **Dashboard**: Available in Supabase dashboard
+```
+
+### Package.json Integration
+Add to `package.json`:
+
+```json
+{
+  "scripts": {
+    "setup-tracking": "./setup-git-hooks.sh",
+    "track-commit": "git add . && git commit -m 'Tracked commit'",
+    "view-dashboard": "open https://supabase.com/dashboard/project/zeopoimfsxdidkyiucsr"
+  }
+}
+```
+
+## Troubleshooting
+
+### Common Issues
+1. **Missing jq**: `brew install jq` (macOS) or `sudo apt-get install jq` (Ubuntu)
+2. **Permission denied**: `chmod +x setup-git-hooks.sh`
+3. **Supabase key missing**: Check `.env.local` file
+4. **Git not initialized**: Run `git init` first
+
+### Debug Commands
+```bash
+# Test the hook manually
+.git/hooks/post-commit
+
+# Check Supabase connection
+curl -H "apikey: $SUPABASE_ANON_KEY" \
+  "https://zeopoimfsxdidkyiucsr.supabase.co/rest/v1/projects"
+
+# View tracked commits
+# (Check Supabase dashboard)
+```
+
+## Best Practices
+
+### Project Naming
+- Use **kebab-case** for project names
+- Keep names **descriptive** and **consistent**
+- Avoid **spaces** in project names
+
+### Commit Messages
+- Write **clear, descriptive** commit messages
+- Use **conventional commits** format when possible
+- Include **context** about what changed
+
+### Environment Setup
+- Always set `SUPABASE_ANON_KEY` before setup
+- Use `.env.local` for local environment variables
+- Add `.env.local` to `.gitignore`
+
+## Integration with Other Tools
+
+### GitHub Actions
+```yaml
+# .github/workflows/track-commits.yml
+name: Track Commits
+on: [push]
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Track commit
+        run: |
+          curl -X POST "${{ secrets.SUPABASE_URL }}/rest/v1/rpc/track_git_commit" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{"p_project_name": "${{ github.repository }}", ...}'
+```
+
+### VS Code Integration
+```json
+// .vscode/tasks.json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Setup Git Tracking",
+      "type": "shell",
+      "command": "./setup-git-hooks.sh",
+      "group": "build"
+    }
+  ]
+}
+```
+
+## Maintenance
+
+### Regular Tasks
+- **Monthly**: Review tracked projects in Supabase dashboard
+- **Quarterly**: Update setup scripts with new features
+- **As needed**: Add new projects to tracking system
+
+### Updates
+- **Setup script**: Update from cursor-rules template
+- **Environment variables**: Keep Supabase keys current
+- **Git hooks**: Test after major Git updates
+
+---
+
+## Quick Reference
+
+### Setup Commands
+```bash
+# Full setup for new project
+export SUPABASE_ANON_KEY="your_key"
+./setup-git-hooks.sh "project-name"
+
+# Test the setup
+git add . && git commit -m "Test commit"
+```
+
+### Dashboard Access
+- **Supabase Dashboard**: https://supabase.com/dashboard/project/zeopoimfsxdidkyiucsr
+- **Project Health**: `SELECT * FROM project_health_summary`
+- **Recent Activity**: `SELECT * FROM recent_project_activity`
+
+### Cursor Commands
+- "Set up Git tracking" → Automatic setup
+- "Track this commit" → Manual tracking
+- "Show project dashboard" → Open Supabase dashboard

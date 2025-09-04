@@ -1,0 +1,170 @@
+---
+description: Team-specific decisions and coding conventions
+globs: 
+alwaysApply: false
+---
+
+# Team Conventions & Decisions
+
+> **Instructions**: Document the specific decisions your team has made and WHY. This prevents re-litigating settled decisions.
+
+## Code Style Decisions
+
+### Why We Chose These Patterns
+
+#### [Decision Category] (e.g., Testing, Database, Code Organization)
+**Decision**: [What we decided to do]
+**Reasoning**: [Why we made this choice]
+**Alternatives Considered**: [What else we looked at]
+**Date Decided**: [When this was decided]
+**Review Date**: [When to reconsider this decision]
+
+**Example**:
+```
+#### Database Access Pattern
+Decision: Use SQLAlchemy Core, not ORM
+Reasoning: Performance requirements + complex analytical queries
+Alternatives Considered: SQLAlchemy ORM, raw SQL, Tortoise ORM
+Date Decided: 2024-01-15
+Review Date: Q3 2024 (after performance testing)
+Exception: User authentication (simple CRUD, ORM is fine)
+```
+
+## Project-Specific Patterns
+
+### File Organization
+```
+src/
+├── api/           # API endpoints only
+├── business/      # Business logic (pure functions when possible)
+├── data/          # Database models and data access
+├── external/      # Third-party service integrations
+└── utils/         # Pure utility functions
+```
+
+### Naming Conventions
+- **Files**: `snake_case.py`, `kebab-case.ts`
+- **Classes**: `PascalCase`
+- **Functions**: `snake_case` (Python), `camelCase` (TypeScript)
+- **Constants**: `SCREAMING_SNAKE_CASE`
+- **Database**: `snake_case` tables and columns
+
+### Error Handling Patterns
+```python
+# Our standard error pattern
+class BusinessError(Exception):
+    """For business rule violations"""
+    pass
+
+class ValidationError(Exception):
+    """For input validation failures"""
+    pass
+
+# Always include context in errors
+raise BusinessError(f"Cannot cancel order {order.id}: already shipped")
+```
+
+## Testing Conventions
+
+### Test Organization
+```
+tests/
+├── unit/          # Fast, isolated tests
+├── integration/   # Tests with real database/external services
+└── e2e/           # Full user workflows
+```
+
+### Testing Patterns We Use
+- **Database Tests**: Use TestContainers with real PostgreSQL (no mocking)
+- **API Tests**: Test through actual HTTP endpoints
+- **External Services**: Mock at the HTTP boundary using `responses` library
+- **Test Data**: Factories for complex objects, hard-coded for simple cases
+
+### Testing Patterns We Avoid
+- ❌ Mocking database queries (found too many production bugs)
+- ❌ Testing implementation details (test behavior, not internals)
+- ❌ Overly complex test fixtures (keep tests readable)
+
+## Code Review Standards
+
+### What We Always Check
+- [ ] Business logic is testable (pure functions when possible)
+- [ ] Error messages include context for debugging
+- [ ] Database queries are efficient (use `EXPLAIN` for complex ones)
+- [ ] Security: No secrets in code, validate all inputs
+- [ ] Performance: No N+1 queries, reasonable response times
+
+### What We Don't Nitpick
+- Minor style issues (let the formatter handle it)
+- Personal preference on variable names (if clear, it's fine)
+- Perfect abstractions (optimize for readability first)
+
+## Deployment & Operations
+
+### Environment Management
+- **Local**: Docker Compose with real database
+- **Development**: Staging environment, reset daily
+- **Production**: Blue-green deployment, manual approval required
+
+### Release Process
+1. Feature branch → dev environment (automatic)
+2. PR review → staging deployment (automatic)
+3. Manual testing on staging
+4. Production deployment (manual approval)
+5. Post-deployment verification
+
+### Monitoring & Alerts
+- **Critical**: Payment failures, authentication down, database errors
+- **Warning**: High response times, unusual error rates
+- **Info**: Deployment notifications, feature flag changes
+
+## Technical Debt Tracking
+
+### Current Known Issues
+1. **[Issue]**: [Description and impact]
+2. **User service circular imports**: Refactor needed, blocking new features
+3. **Frontend bundle size**: 2MB, slowing initial load
+4. **Redis connection pooling**: Inefficient, causes occasional timeouts
+
+### Debt Paydown Process
+- Track in GitHub issues with `tech-debt` label
+- Address one item per sprint
+- Estimate impact before fixing (high impact first)
+- Document the fix to prevent regression
+
+## Team Processes
+
+### Communication
+- **Daily Standup**: 9:30 AM, async updates in Slack if unavailable
+- **Planning**: Mondays, review priorities and blockers
+- **Retrospective**: End of sprint, focus on process improvements
+
+### Knowledge Sharing
+- **Architecture Decisions**: Document in `/docs/adr/` directory
+- **Complex Features**: Record demo video for future reference
+- **Debugging Sessions**: Share findings in team chat
+
+### Onboarding New Team Members
+- Pair programming for first week
+- Shadow code reviews before doing independent reviews
+- Own one feature end-to-end by end of first month
+
+---
+
+## Decision Log
+
+| Date | Decision | Reasoning | Status |
+|------|----------|-----------|---------|
+| 2024-01-15 | SQLAlchemy Core over ORM | Performance + complex queries | Active |
+| 2024-01-10 | TestContainers for DB tests | Too many mock-related bugs | Active |
+| 2023-12-20 | React over Vue | Team experience | Active |
+
+---
+
+## Maintenance
+
+**Owner**: [Team lead or rotating responsibility]
+**Review Schedule**: Monthly team retrospective
+**Update Trigger**: New team members, major technical decisions, process changes
+
+This file should evolve with the team. When debates arise about "how we do things," update this document with the decision and reasoning.

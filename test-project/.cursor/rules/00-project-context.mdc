@@ -1,0 +1,87 @@
+---
+description: Project-specific context and constraints
+alwaysApply: true
+---
+
+# Project Context
+
+> **Instructions**: Replace this template with your actual project details. Delete sections that don't apply.
+
+## What This Project Is
+
+**Brief Description**: [Replace with 1-2 sentences describing what this project does]
+
+**Domain**: [e.g., E-commerce, Healthcare, FinTech, DevTools, etc.]
+
+**Scale**: [e.g., Prototype, MVP, Production serving 1K users, Enterprise with 100K+ users]
+
+## Critical Business Context
+
+### Compliance Requirements
+- [ ] None
+- [ ] GDPR/Privacy regulations
+- [ ] SOX (financial reporting)
+- [ ] HIPAA (healthcare)
+- [ ] PCI DSS (payment processing)
+- [ ] SOC 2 (security controls)
+- [ ] Other: _______________
+
+### Performance Requirements
+- **Uptime SLA**: [e.g., 99.9%, no SLA, best effort]
+- **Response Time**: [e.g., <200ms API, <3s page load, no requirement]
+- **Scale**: [e.g., 100 concurrent users, 10K requests/minute]
+
+### Security Constraints
+- **Data Classification**: [e.g., Public, Internal, Confidential, Restricted]
+- **Authentication**: [e.g., OAuth, SAML, API keys, no auth]
+- **Special Security**: [Any unusual security requirements]
+
+## Technical Constraints
+
+### Technology Stack
+**Language(s)**: [e.g., Python 3.11, TypeScript, Go]
+**Framework(s)**: [e.g., FastAPI, React 18, NextJS]
+**Database**: [e.g., PostgreSQL 15, MongoDB, SQLite]
+**Infrastructure**: [e.g., AWS, Docker, Kubernetes, Vercel]
+
+### Hard Constraints
+- **Legacy Dependencies**: [Any old systems we must integrate with]
+- **Performance Limits**: [Memory, CPU, bandwidth constraints]
+- **Platform Lock-in**: [Specific cloud provider requirements]
+- **Compatibility**: [Browser support, mobile requirements]
+
+## Integration Points
+
+### External Services
+- **Payment**: [Stripe, PayPal, none]
+- **Auth Provider**: [Auth0, Cognito, internal]
+- **Email**: [SendGrid, SES, none]
+- **Monitoring**: [DataDog, Sentry, none]
+- **Other APIs**: [List critical external dependencies]
+
+### Data Sources
+- **Primary Database**: [Main data store]
+- **External Data**: [APIs we consume, data imports]
+- **Real-time**: [WebSockets, event streams, polling]
+
+## Team Context
+
+**Team Size**: [e.g., Solo, 2-3 developers, 10+ engineers]
+**Experience Level**: [e.g., Senior team, mixed, mostly junior]
+**Deployment Frequency**: [e.g., Daily, weekly, on-demand]
+**Code Review Process**: [Required, optional, pair programming]
+
+---
+
+## Usage Notes
+
+This rule provides context about what makes THIS project unique. It should answer:
+- What business problem are we solving?
+- What constraints do we operate under?
+- What makes this different from a generic web app?
+
+Update this file when:
+- Requirements change
+- New constraints are discovered
+- Team structure changes
+- Technical architecture evolves

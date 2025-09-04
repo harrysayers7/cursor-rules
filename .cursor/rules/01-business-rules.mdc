@@ -1,0 +1,127 @@
+---
+description: Domain-specific business logic and constraints
+globs: **/models/**, **/services/**, **/api/**, **/domain/**
+alwaysApply: false
+---
+
+# Business Rules & Domain Logic
+
+> **Instructions**: Document the business rules that are specific to your domain. Delete unused sections.
+
+## Core Business Entities
+
+### [Entity Name] (e.g., User, Order, Product)
+**States**: [e.g., active, suspended, deleted]
+**Transitions**: 
+- [current state] → [new state]: [condition/trigger]
+- Example: pending → confirmed: payment received AND inventory available
+
+**Business Rules**:
+- [Rule 1]: [When this happens, do that]
+- [Rule 2]: [This constraint must always be true]
+
+## Workflow Rules
+
+### [Process Name] (e.g., Order Processing, User Onboarding)
+**Steps**: 
+1. [Step 1]: [What happens, who does it]
+2. [Step 2]: [Next action, conditions]
+3. [Step 3]: [Final state]
+
+**Business Rules**:
+- **Timing**: [e.g., Orders expire after 30 minutes]
+- **Validation**: [e.g., Credit check required for orders >$1000]
+- **Notifications**: [e.g., Email customer on status change]
+
+## Data Rules
+
+### Required Fields
+- **[Entity]**: [field1, field2] are always required
+- **[Entity]**: [field3] required only when [condition]
+
+### Validation Rules
+- **Email**: Must be unique across all active users
+- **Phone**: Format: +1-XXX-XXX-XXXX (US only)
+- **Currency**: Always store in cents, display in dollars
+- **Dates**: All timestamps in UTC, display in user timezone
+
+### Calculated Fields
+- **[Field Name]**: [How it's calculated]
+- **Total Price**: sum(line_items) + tax + shipping - discounts
+- **User Score**: [complex calculation logic]
+
+## Integration Rules
+
+### External System Constraints
+- **[System Name]**: [Rate limits, data format, sync frequency]
+- **Payment Provider**: Refunds must happen within 180 days
+- **Email Service**: Max 1000 emails/hour, use templates only
+
+### Data Synchronization
+- **Source of Truth**: [Which system owns what data]
+- **Sync Frequency**: [How often data is synchronized]
+- **Conflict Resolution**: [What happens when data conflicts]
+
+## Compliance & Audit Rules
+
+### Data Retention
+- **User Data**: Delete after 7 years of inactivity
+- **Financial Records**: Keep for 7 years (legal requirement)
+- **Logs**: Retain for 90 days
+
+### Access Control
+- **PII Access**: Requires manager approval
+- **Financial Data**: Finance team only
+- **Admin Functions**: Two-person approval
+
+### Audit Trail
+- **Required Events**: [List what must be logged]
+- **Data Changes**: Who, what, when, why
+- **Access Logs**: All PII access must be logged
+
+## Business Logic Examples
+
+```python
+# Example: Order validation
+def validate_order(order):
+    """Business rules for order validation."""
+    
+    # Rule: Orders over $1000 require credit check
+    if order.total > 1000 and not order.credit_check_passed:
+        raise BusinessRuleViolation("Credit check required for large orders")
+    
+    # Rule: Cannot order more than inventory
+    for item in order.items:
+        if item.quantity > item.product.inventory:
+            raise BusinessRuleViolation(f"Insufficient inventory for {item.product.name}")
+    
+    # Rule: Shipping address required for physical products
+    if order.has_physical_items() and not order.shipping_address:
+        raise BusinessRuleViolation("Shipping address required")
+```
+
+## Edge Cases & Exceptions
+
+### Known Edge Cases
+- **[Scenario]**: [How to handle it]
+- **Refund after shipping**: Partial refund minus shipping cost
+- **Duplicate orders**: Check for same user + items within 5 minutes
+
+### Exception Handling
+- **Invalid data from external API**: Log error, use default value
+- **Payment fails during checkout**: Hold inventory for 10 minutes
+- **System downtime**: Queue operations, process when restored
+
+---
+
+## Maintenance Notes
+
+**Last Updated**: [Date]
+**Owner**: [Team/Person responsible]
+**Review Schedule**: [How often to review these rules]
+
+This file should be updated when:
+- New business requirements emerge
+- Edge cases are discovered
+- Regulatory requirements change
+- Process improvements are implemented

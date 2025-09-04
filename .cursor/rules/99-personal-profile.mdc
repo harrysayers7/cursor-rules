@@ -1,0 +1,210 @@
+---
+description: Personal development environment and tool preferences
+alwaysApply: true
+---
+
+# Personal Development Profile
+
+> **Instructions**: This file captures YOUR specific setup, tools, and preferences. Update when you change tools or workflows.
+
+## My Tech Stack Preferences
+
+### Languages & Frameworks I Use
+**Primary Languages**: [e.g., Python 3.11, TypeScript, Go]
+**Web Frameworks**: [e.g., FastAPI, Next.js 14, Svelte]
+**Mobile**: [e.g., React Native, Flutter, native iOS/Android]
+**Database**: [e.g., PostgreSQL, MongoDB, SQLite]
+**Cloud**: [e.g., AWS, Vercel, Railway, DigitalOcean]
+
+### Languages & Frameworks I Avoid
+**Avoid**: [e.g., PHP, Java Spring, Angular - specify why]
+**Reasoning**: [e.g., Team expertise, project constraints, personal preference]
+
+## Available MCP Tools
+
+### Project Management
+- **Task Master AI**: Task planning, project initialization, complexity analysis
+  - Use for: Breaking down large features, project setup, task tracking
+  - Commands: `mcp_task-master-ai_initialize_project`, `mcp_task-master-ai_add_task`
+
+### Documentation & Research
+- **Context7**: Library documentation lookup
+  - Use for: API references, framework documentation
+  - Commands: `mcp_context7_resolve-library-id`, `mcp_context7_get-library-docs`
+
+### Development Tools
+- **GitHub Integration**: Repository management, code search
+  - Use for: Creating repos, searching code patterns, managing issues
+  - Commands: `mcp_github_create_repository`, `mcp_github_search_code`
+
+- **Supabase**: Database and backend services
+  - Use for: Database setup, API generation, authentication
+  - Commands: `mcp_supabase_create_project`, `mcp_supabase_execute_sql`
+
+### Memory & Knowledge
+- **Memory Graph**: Persistent knowledge storage
+  - Use for: Remembering project decisions, tracking patterns
+  - Commands: `mcp_memory_create_entities`, `mcp_memory_search_nodes`
+
+## Development Workflow Preferences
+
+### Project Initialization
+1. **Use Task Master** for initial project breakdown
+2. **Create GitHub repo** with standard template
+3. **Set up Cursor rules** using this template system
+4. **Initialize dependencies** with modern package managers (uv, pnpm, cargo)
+
+### Code Organization Patterns
+```
+my-project/
+├── .cursor/rules/          # Project-specific context
+├── docs/                   # ADRs and documentation
+├── src/                    # Source code
+├── tests/                  # Test organization I prefer
+├── scripts/               # Development scripts
+└── .env.example           # Environment template
+```
+
+### Testing Approach
+- **Unit Tests**: Jest/Vitest for JS/TS, pytest for Python
+- **Integration**: Real databases with TestContainers
+- **E2E**: Playwright for web, Maestro for mobile
+- **Load Testing**: k6 for APIs
+
+### Deployment Preferences
+- **Containerization**: Docker with multi-stage builds
+- **CI/CD**: GitHub Actions (prefer over GitLab CI)
+- **Hosting**: Vercel for frontend, Railway/Fly.io for backend
+- **Monitoring**: Sentry for errors, Posthog for analytics
+
+## Personal Code Style
+
+### Naming Conventions I Prefer
+- **Files**: kebab-case for config, snake_case for Python, camelCase for JS/TS
+- **Variables**: Descriptive names over short ones
+- **Functions**: Verb-noun pattern (getUserById, not getUser)
+- **Constants**: SCREAMING_SNAKE_CASE with context prefix
+
+### Code Patterns I Like
+```typescript
+// Prefer explicit over implicit
+interface UserCreateRequest {
+  name: string;
+  email: string;
+  role: 'admin' | 'user';
+}
+
+// Prefer early returns
+function validateUser(user: UserCreateRequest): Result<User, ValidationError> {
+  if (!user.email.includes('@')) {
+    return Error(new ValidationError('Invalid email'));
+  }
+  
+  if (user.name.length < 2) {
+    return Error(new ValidationError('Name too short'));
+  }
+  
+  return Ok(createUser(user));
+}
+```
+
+### Patterns I Avoid
+- ❌ Deeply nested conditionals
+- ❌ Magic numbers and strings
+- ❌ Overly clever abstractions
+- ❌ God classes/functions
+
+## Environment Setup
+
+### Editor Configuration
+- **IDE**: Cursor with Sonnet 3.5
+- **Extensions**: Prettier, ESLint, Pylint, Git Lens
+- **Theme**: [Your preference]
+- **Font**: [Your preference, e.g., JetBrains Mono, Fira Code]
+
+### Terminal Setup
+- **Shell**: [e.g., zsh with oh-my-zsh, fish]
+- **Package Managers**: 
+  - Python: uv
+  - Node.js: pnpm
+  - Rust: cargo
+  - Go: built-in modules
+
+### Development Tools
+- **API Testing**: Bruno/Insomnia (prefer over Postman)
+- **Database GUI**: [e.g., TablePlus, DBeaver, pgAdmin]
+- **Design**: [e.g., Figma, Sketch, Adobe XD]
+- **Documentation**: [e.g., Notion, Obsidian, Markdown + GitHub]
+
+## Communication Preferences
+
+### Documentation Style
+- **ADRs**: For architectural decisions
+- **Inline Comments**: For complex business logic only
+- **README**: Always include quick start guide
+- **API Docs**: OpenAPI/Swagger with examples
+
+### Code Review Philosophy
+- **Focus on**: Logic correctness, security, performance
+- **Don't nitpick**: Style issues (automated tools handle this)
+- **Provide context**: Why suggestions matter
+- **Ask questions**: When unsure about intent
+
+## Project Templates I Use
+
+### Web Application Starter
+```bash
+# My typical web app setup
+- Next.js 14 with App Router
+- TypeScript with strict mode
+- Tailwind CSS for styling
+- Prisma for database
+- NextAuth for authentication
+- Vercel for deployment
+```
+
+### API Service Starter
+```bash
+# My typical API setup
+- FastAPI with Python 3.11
+- SQLAlchemy Core (not ORM)
+- Pydantic for validation
+- Alembic for migrations
+- Docker with multi-stage builds
+- Railway/Fly.io for deployment
+```
+
+### CLI Tool Starter
+```bash
+# My typical CLI setup
+- Python with Rich for UI
+- Click for command structure
+- Typer for modern CLI patterns
+- PyInstaller for distribution
+```
+
+## Learning & Research Habits
+
+### When Learning New Tech
+1. **Start with official docs** using Context7 MCP
+2. **Build small prototype** to test concepts
+3. **Document decisions** in team-conventions.mdc
+4. **Share findings** in team knowledge base
+
+### Staying Current
+- **Weekly**: Check release notes for core tools
+- **Monthly**: Explore new tools in sandbox projects
+- **Quarterly**: Review and update personal stack preferences
+
+---
+
+## Maintenance Notes
+
+**Last Updated**: [Date when you last reviewed this]
+**Review Schedule**: Monthly (update tools and preferences)
+
+This file should evolve as you:
+- Adopt new tools and frameworks
+- Change development preferences
+- Discover better workflows
+- Update your development environment
