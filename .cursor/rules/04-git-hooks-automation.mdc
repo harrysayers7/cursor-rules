@@ -1,20 +1,22 @@
 ---
-description: Automatic Git hook setup for Supabase project tracking
+description: Semi-automatic Git hook setup for Supabase project tracking with fallback options
 globs: **/.git/**, **/setup-git-hooks.sh**, **/.env.example**
 alwaysApply: false
 ---
 
 # Git Hooks & Supabase Automation
 
-## Automatic Project Setup
+## Semi-Automatic Project Setup
 
-When starting a new project, Cursor will automatically:
+When starting a new project, Cursor will offer to:
 
 1. **Detect if Git hooks are needed** for Supabase tracking
-2. **Create the setup script** if it doesn't exist
+2. **Create the setup script** with fallback mechanisms
 3. **Initialize Git repository** if needed
-4. **Set up environment variables** for Supabase
+4. **Assist with environment variables** (MCP when available, manual fallback)
 5. **Install and configure** the post-commit hook
+
+> **Important**: This is an **optional enhancement** for teams using Cursor + Supabase. It prioritizes reliability and developer control over full automation.
 
 ## Project Detection Rules
 
@@ -29,13 +31,23 @@ When starting a new project, Cursor will automatically:
 - ❌ **Documentation-only** repositories
 - ❌ **Temporary** or experimental projects
 
-## Automatic Setup Process
+## Semi-Automatic Setup Process
 
-### 1. MCP Integration (Automatic)
+### 1. MCP Integration (When Available)
 ```bash
-# Cursor automatically uses Supabase MCP tools
-# No manual Supabase setup needed!
-# MCP handles: project creation, key management, API calls
+# Cursor attempts to use Supabase MCP tools
+# Falls back to manual configuration if MCP unavailable
+# MCP provides: project_id, anon_key, url (when working)
+
+# Check MCP availability
+if command -v cursor &> /dev/null && [ -n "$CURSOR_MCP_ENABLED" ]; then
+  echo "✅ MCP integration available"
+  # Attempt to get credentials via MCP
+  SUPABASE_URL=$(cursor mcp get-supabase-url 2>/dev/null || echo "")
+  SUPABASE_ANON_KEY=$(cursor mcp get-supabase-key 2>/dev/null || echo "")
+else
+  echo "⚠️  MCP not available, using manual configuration"
+fi
 ```
 
 ### 2. Git Repository Check
@@ -47,28 +59,45 @@ if [ ! -d ".git" ]; then
 fi
 ```
 
-### 3. Setup Script Creation
+### 3. Setup Script Creation (with Fallback)
 ```bash
 # Create setup-git-hooks.sh if it doesn't exist
 if [ ! -f "setup-git-hooks.sh" ]; then
-  # Copy from cursor-rules template
-  cp /path/to/cursor-rules/setup-git-hooks.sh .
-  chmod +x setup-git-hooks.sh
-  echo "✅ Git hook setup script created"
+  if [ -f "/path/to/cursor-rules/setup-git-hooks.sh" ]; then
+    cp /path/to/cursor-rules/setup-git-hooks.sh .
+    chmod +x setup-git-hooks.sh
+    echo "✅ Git hook setup script created"
+  else
+    echo "⚠️  Template not found, manual setup required"
+  fi
 fi
 ```
 
-### 4. MCP-Enhanced Environment
+### 4. Environment Configuration (with Fallbacks)
 ```bash
-# Cursor automatically gets Supabase credentials via MCP
-# No manual key management needed!
-# MCP provides: project_id, anon_key, url automatically
+# MCP-Enhanced Environment (when available)
+# Cursor attempts to get Supabase credentials via MCP
+# Falls back to manual input if MCP fails
+
+# Fallback to manual input if MCP failed
+if [ -z "$SUPABASE_URL" ]; then
+  echo "Please provide Supabase configuration:"
+  read -p "Enter Supabase URL: " SUPABASE_URL
+  read -p "Enter Supabase Anon Key: " SUPABASE_ANON_KEY
+  read -p "Enter Project ID (optional): " PROJECT_ID
+fi
+
+# Validate required fields
+if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+  echo "❌ Error: Missing required Supabase configuration"
+  exit 1
+fi
 ```
 
 ## Cursor Integration Commands
 
 ### Natural Language Triggers
-When you say any of these, Cursor will set up Git hooks using MCP:
+When you say any of these, Cursor will offer to set up Git hooks (with MCP when available):
 
 - **"Set up Git tracking for this project"**
 - **"Add Supabase project tracking"**
@@ -77,53 +106,84 @@ When you say any of these, Cursor will set up Git hooks using MCP:
 - **"Initialize project tracking"**
 - **"Create a new Supabase project"**
 
-### Automatic Detection
-Cursor will also detect when to set up Git hooks when:
+### Detection & Fallback
+Cursor will detect when to offer Git hook setup when:
 
 - You create a new `.cursor/rules/` directory
 - You mention "Supabase" in project context
 - You add database-related files
 - You create a new project structure
-- **MCP detects** a new project needs tracking
+
+**Important**: Always provides fallback to manual configuration if MCP is unavailable or fails.
 
 ## Setup Script Template
 
-The `setup-git-hooks.sh` script will be automatically created with MCP integration:
+The `setup-git-hooks.sh` script will be created with MCP integration and fallback mechanisms:
 
 ```bash
 #!/bin/bash
-# Auto-generated Git Hook Setup for Supabase Project Tracking
-# Uses MCP for automatic Supabase configuration
+# Git Hook Setup for Supabase Project Tracking
+# Uses MCP when available, falls back to manual configuration
 
 PROJECT_NAME="${1:-$(basename $(pwd))}"
 
-# MCP automatically provides these via Cursor:
-# - SUPABASE_URL (from MCP configuration)
-# - SUPABASE_ANON_KEY (from MCP configuration)  
-# - PROJECT_ID (from MCP project creation)
+# Function to check MCP availability
+check_mcp() {
+  if command -v cursor &> /dev/null && [ -n "$CURSOR_MCP_ENABLED" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
 
-# ... rest of setup script uses MCP-provided values
+# MCP Integration (with fallbacks)
+if check_mcp; then
+  echo "✅ MCP integration available"
+  # Attempt to get credentials via MCP
+  SUPABASE_URL=$(cursor mcp get-supabase-url 2>/dev/null || echo "")
+  SUPABASE_ANON_KEY=$(cursor mcp get-supabase-key 2>/dev/null || echo "")
+  PROJECT_ID=$(cursor mcp get-project-id 2>/dev/null || echo "")
+else
+  echo "⚠️  MCP not available, using manual configuration"
+fi
+
+# Fallback to manual input if MCP failed
+if [ -z "$SUPABASE_URL" ]; then
+  echo "Please provide Supabase configuration:"
+  read -p "Supabase URL: " SUPABASE_URL
+  read -p "Supabase Anon Key: " SUPABASE_ANON_KEY
+  read -p "Project ID (optional): " PROJECT_ID
+fi
+
+# Validate required fields
+if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+  echo "❌ Error: Missing required Supabase configuration"
+  exit 1
+fi
 ```
 
 ## Environment Configuration
 
-### MCP-Enhanced Setup (Automatic)
+### MCP-Enhanced Setup (When Available)
 ```bash
-# Cursor + MCP automatically handles:
+# Cursor + MCP attempts to handle:
 # ✅ SUPABASE_ANON_KEY (from MCP configuration)
 # ✅ SUPABASE_URL (from MCP configuration)
 # ✅ PROJECT_ID (from MCP project creation)
 # ✅ Authentication (via MCP tools)
 
-# No manual environment setup needed!
+# Falls back to manual configuration if MCP fails
 ```
 
-### Optional Configuration
+### Manual Configuration (Fallback)
 ```bash
-# .env.local (only if you want to override MCP defaults)
+# .env.local (required if MCP is unavailable)
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key-here
+PROJECT_ID=your-project-id
 PROJECT_NAME=my-awesome-project
 GIT_HOOK_ENABLED=true
-# MCP provides all Supabase credentials automatically
+MCP_ENABLED=false  # Disable MCP if causing issues
 ```
 
 ## Project Integration
@@ -152,25 +212,62 @@ Add to `package.json`:
 }
 ```
 
+## Important Limitations & Considerations
+
+### **MCP Dependency**
+- **Requires**: Cursor with MCP integration enabled
+- **Fallback**: Manual configuration always available
+- **Security**: Credentials handled through MCP (review security implications)
+
+### **Vendor Lock-in**
+- **Supabase dependency**: Creates coupling to Supabase
+- **Mitigation**: Standard Git hooks and HTTP APIs used
+- **Export**: Data can be exported from Supabase for migration
+
+### **Complexity Trade-off**
+- **Benefit**: Streamlined setup when MCP works
+- **Cost**: Added complexity vs. simple manual setup
+- **Control**: Easy to disable or remove the system
+
 ## Troubleshooting
 
 ### Common Issues
 1. **Missing jq**: `brew install jq` (macOS) or `sudo apt-get install jq` (Ubuntu)
 2. **Permission denied**: `chmod +x setup-git-hooks.sh`
-3. **Supabase key missing**: Check `.env.local` file
-4. **Git not initialized**: Run `git init` first
+3. **MCP not available**: Use manual configuration mode
+4. **Supabase connection failed**: Check credentials and network
+5. **Git not initialized**: Run `git init` first
 
 ### Debug Commands
 ```bash
 # Test the hook manually
 .git/hooks/post-commit
 
-# Check Supabase connection
-curl -H "apikey: $SUPABASE_ANON_KEY" \
-  "https://zeopoimfsxdidkyiucsr.supabase.co/rest/v1/projects"
+# Check MCP availability
+cursor mcp status 2>/dev/null || echo "MCP not available"
 
-# View tracked commits
-# (Check Supabase dashboard)
+# Test Supabase connection
+curl -H "apikey: $SUPABASE_ANON_KEY" \
+  "$SUPABASE_URL/rest/v1/projects"
+
+# Check environment variables
+echo "SUPABASE_URL: $SUPABASE_URL"
+echo "SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:0:10}..."
+
+# View tracked commits (check Supabase dashboard)
+```
+
+### Disable/Uninstall Process
+```bash
+# Disable Git hooks
+echo "#!/bin/bash" > .git/hooks/post-commit
+chmod +x .git/hooks/post-commit
+
+# Remove environment variables
+unset SUPABASE_URL SUPABASE_ANON_KEY PROJECT_ID
+
+# Remove setup script
+rm -f setup-git-hooks.sh .env.local
 ```
 
 ## Best Practices
