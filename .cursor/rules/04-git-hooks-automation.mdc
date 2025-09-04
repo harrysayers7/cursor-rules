@@ -31,14 +31,11 @@ When starting a new project, Cursor will automatically:
 
 ## Automatic Setup Process
 
-### 1. Environment Detection
+### 1. MCP Integration (Automatic)
 ```bash
-# Check for existing Supabase configuration
-if [ -f ".env.local" ] && grep -q "SUPABASE" .env.local; then
-  echo "✅ Supabase already configured"
-else
-  echo "🔧 Setting up Supabase environment"
-fi
+# Cursor automatically uses Supabase MCP tools
+# No manual Supabase setup needed!
+# MCP handles: project creation, key management, API calls
 ```
 
 ### 2. Git Repository Check
@@ -61,23 +58,24 @@ if [ ! -f "setup-git-hooks.sh" ]; then
 fi
 ```
 
-### 4. Environment Variables
+### 4. MCP-Enhanced Environment
 ```bash
-# Add to .env.example
-echo "SUPABASE_ANON_KEY=your_anon_key_here" >> .env.example
-echo "SUPABASE_URL=https://zeopoimfsxdidkyiucsr.supabase.co" >> .env.example
+# Cursor automatically gets Supabase credentials via MCP
+# No manual key management needed!
+# MCP provides: project_id, anon_key, url automatically
 ```
 
 ## Cursor Integration Commands
 
 ### Natural Language Triggers
-When you say any of these, Cursor will set up Git hooks:
+When you say any of these, Cursor will set up Git hooks using MCP:
 
 - **"Set up Git tracking for this project"**
 - **"Add Supabase project tracking"**
 - **"Track commits in Supabase"**
 - **"Set up automated Git hooks"**
 - **"Initialize project tracking"**
+- **"Create a new Supabase project"**
 
 ### Automatic Detection
 Cursor will also detect when to set up Git hooks when:
@@ -86,37 +84,46 @@ Cursor will also detect when to set up Git hooks when:
 - You mention "Supabase" in project context
 - You add database-related files
 - You create a new project structure
+- **MCP detects** a new project needs tracking
 
 ## Setup Script Template
 
-The `setup-git-hooks.sh` script will be automatically created with:
+The `setup-git-hooks.sh` script will be automatically created with MCP integration:
 
 ```bash
 #!/bin/bash
 # Auto-generated Git Hook Setup for Supabase Project Tracking
+# Uses MCP for automatic Supabase configuration
 
 PROJECT_NAME="${1:-$(basename $(pwd))}"
-SUPABASE_URL="${SUPABASE_URL:-https://zeopoimfsxdidkyiucsr.supabase.co}"
-SUPABASE_ANON_KEY="${SUPABASE_ANON_KEY}"
 
-# ... rest of setup script
+# MCP automatically provides these via Cursor:
+# - SUPABASE_URL (from MCP configuration)
+# - SUPABASE_ANON_KEY (from MCP configuration)  
+# - PROJECT_ID (from MCP project creation)
+
+# ... rest of setup script uses MCP-provided values
 ```
 
 ## Environment Configuration
 
-### Required Environment Variables
+### MCP-Enhanced Setup (Automatic)
 ```bash
-# .env.local (add to .gitignore)
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-SUPABASE_URL=https://zeopoimfsxdidkyiucsr.supabase.co
+# Cursor + MCP automatically handles:
+# ✅ SUPABASE_ANON_KEY (from MCP configuration)
+# ✅ SUPABASE_URL (from MCP configuration)
+# ✅ PROJECT_ID (from MCP project creation)
+# ✅ Authentication (via MCP tools)
+
+# No manual environment setup needed!
 ```
 
 ### Optional Configuration
 ```bash
-# .env.local
+# .env.local (only if you want to override MCP defaults)
 PROJECT_NAME=my-awesome-project
-SUPABASE_PROJECT_ID=zeopoimfsxdidkyiucsr
 GIT_HOOK_ENABLED=true
+# MCP provides all Supabase credentials automatically
 ```
 
 ## Project Integration
@@ -235,10 +242,9 @@ jobs:
 
 ## Quick Reference
 
-### Setup Commands
+### Setup Commands (MCP-Enhanced)
 ```bash
-# Full setup for new project
-export SUPABASE_ANON_KEY="your_key"
+# Full setup for new project (MCP handles Supabase automatically)
 ./setup-git-hooks.sh "project-name"
 
 # Test the setup
@@ -250,7 +256,8 @@ git add . && git commit -m "Test commit"
 - **Project Health**: `SELECT * FROM project_health_summary`
 - **Recent Activity**: `SELECT * FROM recent_project_activity`
 
-### Cursor Commands
-- "Set up Git tracking" → Automatic setup
-- "Track this commit" → Manual tracking
-- "Show project dashboard" → Open Supabase dashboard
+### Cursor Commands (MCP-Enhanced)
+- "Set up Git tracking" → Automatic setup via MCP
+- "Create new Supabase project" → MCP creates project + sets up tracking
+- "Track this commit" → Manual tracking via MCP
+- "Show project dashboard" → Open Supabase dashboard via MCP

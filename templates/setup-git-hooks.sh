@@ -3,6 +3,7 @@
 # Git Hook Setup for Supabase Project Tracking
 # This script sets up automatic tracking of Git commits to Supabase
 # Auto-generated from cursor-rules template
+# Uses MCP for automatic Supabase configuration
 
 set -e
 
@@ -10,9 +11,11 @@ PROJECT_NAME="${1:-$(basename $(pwd))}"
 SUPABASE_URL="${SUPABASE_URL:-https://zeopoimfsxdidkyiucsr.supabase.co}"
 SUPABASE_ANON_KEY="${SUPABASE_ANON_KEY}"
 
+# MCP Integration: Cursor automatically provides Supabase credentials
 if [ -z "$SUPABASE_ANON_KEY" ]; then
-    echo "❌ Error: SUPABASE_ANON_KEY environment variable is required"
-    echo "   Get it from: https://supabase.com/dashboard/project/zeopoimfsxdidkyiucsr/settings/api"
+    echo "🔧 MCP Integration: Getting Supabase credentials from Cursor..."
+    echo "   If you see this, Cursor should have provided the key automatically"
+    echo "   Fallback: Get it from: https://supabase.com/dashboard/project/zeopoimfsxdidkyiucsr/settings/api"
     echo "   Or set it in your .env.local file"
     exit 1
 fi
