@@ -1,0 +1,365 @@
+---
+description: Automatic memory management and knowledge storage using Memory MCP
+globs: **/.cursor/rules/**, **/docs/**, **/README.md**, **/CHANGELOG.md**
+alwaysApply: false
+---
+
+# Memory MCP Automation
+
+## Automatic Knowledge Management
+
+When working on projects, Cursor will automatically:
+
+1. **Store project decisions** in the memory graph
+2. **Track architectural patterns** and their reasoning
+3. **Remember business rules** and domain knowledge
+4. **Link related concepts** across projects
+5. **Provide context** for future development
+
+## Memory Integration Process
+
+### 1. Project Knowledge Storage (Automatic)
+```bash
+# Cursor automatically uses Memory MCP tools
+# No manual memory setup needed!
+# MCP handles: entity creation, relationship mapping, knowledge storage
+```
+
+### 2. Decision Tracking
+```bash
+# When you make architectural decisions, Cursor automatically:
+# - Creates entities for concepts
+# - Links decisions to reasoning
+# - Tracks alternatives considered
+# - Stores implementation details
+```
+
+### 3. Pattern Recognition
+```bash
+# Cursor identifies and stores:
+# - Code patterns you prefer
+# - Business logic patterns
+# - Integration patterns
+# - Problem-solving approaches
+```
+
+### 4. Cross-Project Learning
+```bash
+# Memory MCP enables:
+# - Learning from previous projects
+# - Applying patterns to new projects
+# - Avoiding repeated mistakes
+# - Building on past successes
+```
+
+## Cursor Integration Commands
+
+### Natural Language Triggers
+When you say any of these, Cursor will use Memory MCP:
+
+- **"Remember this decision"**
+- **"Store this pattern"**
+- **"Track this business rule"**
+- **"Learn from this project"**
+- **"Apply previous knowledge"**
+- **"What did we decide about X?"**
+
+### Automatic Detection
+Cursor will also detect when to use Memory MCP when:
+
+- You create new `.cursor/rules/` files
+- You document architectural decisions
+- You mention "remember" or "pattern"
+- You reference previous projects
+- **MCP detects** knowledge that should be stored
+
+## Memory Storage Patterns
+
+### Project Entities
+```typescript
+// Cursor automatically creates entities like:
+{
+  name: "TaskFlow Project",
+  entityType: "project",
+  observations: [
+    "Uses Next.js 14 with App Router",
+    "Implements Supabase for backend",
+    "Follows TypeScript strict mode",
+    "Uses Tailwind CSS for styling"
+  ]
+}
+```
+
+### Decision Entities
+```typescript
+// Architectural decisions stored as:
+{
+  name: "Database Schema Design",
+  entityType: "decision",
+  observations: [
+    "Chose PostgreSQL over MongoDB for ACID compliance",
+    "Implemented RLS for security",
+    "Used UUIDs for primary keys",
+    "Created audit tables for compliance"
+  ]
+}
+```
+
+### Pattern Entities
+```typescript
+// Code patterns stored as:
+{
+  name: "API Error Handling Pattern",
+  entityType: "pattern",
+  observations: [
+    "Always return consistent error format",
+    "Include request_id for tracing",
+    "Log errors with context",
+    "Use proper HTTP status codes"
+  ]
+}
+```
+
+## Memory Relationships
+
+### Automatic Linking
+Cursor will create relationships like:
+
+- **"TaskFlow Project"** → **"uses"** → **"Next.js Framework"**
+- **"Database Schema Design"** → **"applies_to"** → **"TaskFlow Project"**
+- **"API Error Handling Pattern"** → **"used_in"** → **"TaskFlow Project"**
+- **"Supabase Integration"** → **"enables"** → **"Real-time Features"**
+
+### Cross-Project Connections
+- **"TaskFlow Project"** → **"similar_to"** → **"Blog Demo Project"**
+- **"Authentication Pattern"** → **"reused_from"** → **"Previous Project"**
+- **"Database Migration"** → **"learned_from"** → **"GitOps System"**
+
+## Memory MCP Integration
+
+### Automatic Entity Creation
+```bash
+# When you create a new project, Cursor automatically:
+# - Creates project entity
+# - Links to tech stack entities
+# - Stores project context
+# - Connects to related patterns
+```
+
+### Decision Documentation
+```bash
+# When you make decisions, Cursor:
+# - Creates decision entity
+# - Links to alternatives considered
+# - Stores reasoning and context
+# - Connects to implementation
+```
+
+### Pattern Recognition
+```bash
+# When you write code, Cursor:
+# - Identifies patterns
+# - Stores pattern details
+# - Links to usage examples
+# - Connects to similar patterns
+```
+
+## Project Integration
+
+### Cursor Rules Integration
+Add to your project's `.cursor/rules/00-project-context.mdc`:
+
+```markdown
+## Memory Integration
+- **Enabled**: Automatic knowledge storage via Memory MCP
+- **Project Context**: Stored in memory graph
+- **Decisions**: Tracked with reasoning
+- **Patterns**: Recognized and stored
+```
+
+### Memory Queries
+```typescript
+// Cursor can query memory like:
+"Show me all projects that use Next.js"
+"What patterns did we use for authentication?"
+"How did we solve the database migration problem?"
+"What alternatives did we consider for state management?"
+```
+
+## Memory Storage Examples
+
+### Business Rules Storage
+```typescript
+// When you document business rules:
+{
+  name: "User Authentication Rules",
+  entityType: "business_rule",
+  observations: [
+    "Users must verify email before access",
+    "Password must be 8+ characters with special chars",
+    "Sessions expire after 24 hours of inactivity",
+    "Failed login attempts lock account for 15 minutes"
+  ]
+}
+```
+
+### Technical Decisions Storage
+```typescript
+// When you make technical decisions:
+{
+  name: "State Management Choice",
+  entityType: "technical_decision",
+  observations: [
+    "Chose Zustand over Redux for simplicity",
+    "Avoided Context API due to performance concerns",
+    "Implemented optimistic updates for better UX",
+    "Used React Query for server state management"
+  ]
+}
+```
+
+### Problem-Solution Storage
+```typescript
+// When you solve problems:
+{
+  name: "Database Connection Pooling Issue",
+  entityType: "problem_solution",
+  observations: [
+    "Problem: Connection pool exhausted under load",
+    "Root cause: Not closing connections properly",
+    "Solution: Implemented connection pooling with limits",
+    "Result: 90% reduction in connection errors"
+  ]
+}
+```
+
+## Memory Queries and Retrieval
+
+### Context-Aware Queries
+```typescript
+// Cursor can ask memory:
+"What did we learn about database performance?"
+"How did we implement real-time features?"
+"What authentication patterns work best?"
+"What are the common pitfalls in Next.js projects?"
+```
+
+### Pattern Matching
+```typescript
+// Memory can suggest patterns:
+"Based on your previous projects, consider using..."
+"This pattern worked well in similar situations..."
+"Here's how we solved this problem before..."
+"These are the alternatives we've tried..."
+```
+
+### Cross-Project Learning
+```typescript
+// Memory connects projects:
+"Project A used this pattern successfully"
+"Project B had similar requirements and used..."
+"Here's what we learned from the previous implementation"
+"This approach failed in Project C, but worked in Project D"
+```
+
+## Memory Maintenance
+
+### Regular Tasks
+- **Weekly**: Review stored knowledge for accuracy
+- **Monthly**: Update patterns with new learnings
+- **Quarterly**: Clean up outdated information
+- **As needed**: Add new insights and patterns
+
+### Memory Quality
+- **Accuracy**: Verify stored information is current
+- **Completeness**: Ensure important decisions are captured
+- **Relevance**: Remove outdated or incorrect information
+- **Connections**: Maintain proper relationships between entities
+
+## Integration with Git Tracking
+
+### Combined Automation
+```bash
+# When you commit code, Cursor automatically:
+# 1. Tracks commit in Supabase (Git MCP)
+# 2. Stores code patterns in Memory (Memory MCP)
+# 3. Links patterns to project context
+# 4. Updates knowledge graph with new learnings
+```
+
+### Knowledge Evolution
+```typescript
+// Memory evolves with your projects:
+"Pattern X was refined in commit abc123"
+"Decision Y was validated in production"
+"Approach Z failed and was replaced with W"
+"New pattern discovered in recent implementation"
+```
+
+## Troubleshooting
+
+### Common Issues
+1. **Memory not updating**: Check MCP connection
+2. **Duplicate entities**: Use consistent naming
+3. **Missing relationships**: Explicitly link related concepts
+4. **Outdated information**: Regular memory maintenance
+
+### Debug Commands
+```bash
+# Check memory status
+# (Memory MCP provides debugging tools)
+
+# Query specific knowledge
+# (Use natural language queries)
+
+# Review stored patterns
+# (Browse memory graph)
+```
+
+## Best Practices
+
+### Entity Naming
+- Use **descriptive, consistent** names
+- Include **project context** when relevant
+- Avoid **abbreviations** or unclear terms
+- Use **hierarchical naming** for related concepts
+
+### Observation Quality
+- Write **clear, actionable** observations
+- Include **context and reasoning**
+- Add **implementation details**
+- Note **success/failure outcomes**
+
+### Relationship Management
+- Create **meaningful connections**
+- Use **consistent relationship types**
+- Avoid **over-linking** unrelated concepts
+- Maintain **logical hierarchies**
+
+---
+
+## Quick Reference
+
+### Memory Commands (MCP-Enhanced)
+```bash
+# Store knowledge automatically
+# (Cursor handles via Memory MCP)
+
+# Query stored knowledge
+# (Use natural language with Cursor)
+
+# Apply previous learnings
+# (Memory MCP provides context)
+```
+
+### Memory Queries
+- "What patterns did we use for X?"
+- "How did we solve Y problem?"
+- "What alternatives did we consider for Z?"
+- "Show me all projects with similar requirements"
+
+### Cursor Commands (Memory-Enhanced)
+- "Remember this decision" → Store in memory
+- "Apply previous knowledge" → Query memory
+- "What did we learn about X?" → Search memory
+- "Show me related patterns" → Browse memory graph

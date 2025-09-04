@@ -87,6 +87,13 @@ cp cursor-rules-templates/.cursor/rules/02-team-conventions.mdc .cursor/rules/
 - Commit automation
 - Dashboard integration
 
+### 🧠 `05-memory-automation.mdc` (~300 lines, optional)
+**Memory management** and knowledge storage
+- Automatic knowledge storage
+- Decision tracking
+- Pattern recognition
+- Cross-project learning
+
 ## Example: What Good Rules Look Like
 
 **Instead of generic advice:**
@@ -177,6 +184,8 @@ export SUPABASE_ANON_KEY="your_key"
 - **Project operations** and deployments  
 - **Cross-project analytics** and health monitoring
 - **Real-time dashboard** in Supabase
+- **Knowledge and decisions** in memory graph
+- **Patterns and learnings** across projects
 
 ### Cursor Integration
 
@@ -187,6 +196,8 @@ When you start a new project, Cursor will:
 3. **Configure** environment variables
 4. **Install** Git hooks for automatic tracking
 5. **Set up** Supabase project monitoring
+6. **Store** project knowledge in memory graph
+7. **Track** decisions and patterns automatically
 
 ## Migration from Old System
 
